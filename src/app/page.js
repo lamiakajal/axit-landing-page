@@ -9,6 +9,7 @@ import AwesomeFeatures from '@/components/AwesomeFeatures';
 import PricingSection from '@/components/PricingSection';
 import Testimonials from '@/components/Testimonials';
 import CallToAction from '@/components/CallToAction';
+import ContactSection from '@/components/ContactSection';
 
 export default function Home() {
   return (
@@ -27,6 +28,7 @@ export default function Home() {
       <PricingSection />
       <Testimonials />
       <CallToAction />
+      <ContactSection />
     </main>
   );
 }
