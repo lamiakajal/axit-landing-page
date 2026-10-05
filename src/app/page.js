@@ -6,6 +6,7 @@ import TabsSection from '@/components/TabsSection';
 import SubListSection from '@/components/SubListSection';
 import StandardPictureSection from '@/components/StandardPictureSection';
 import AwesomeFeatures from '@/components/AwesomeFeatures';
+import PricingSection from '@/components/PricingSection';
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
       <SubListSection />
       <StandardPictureSection />
       <AwesomeFeatures />
+      <PricingSection />
     </main>
   );
 }

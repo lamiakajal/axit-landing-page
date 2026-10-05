@@ -78,3 +78,13 @@ body {
   animation: socialPulseLoop 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   will-change: transform, color, filter;
 }
+
+@keyframes shimmerSweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  35%,
+  100% {
+    transform: translateX(150%);
+  }
+}
