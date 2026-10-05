@@ -1,20 +1,41 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 /**
  * Hero Section Component
- * Features canonical Tailwind v4 utility tokens (zero linter warnings),
- * seamless typewriter loops on subtitle and form headers, zero dark overlays,
- * responsive alignments, and left-to-right CTA interactions.
+ * Scroll entrance animation via IntersectionObserver matching Tabs and SubList sections,
+ * canonical Tailwind v4 utility tokens (zero linter warnings), dual typewriter loops,
+ * floating form physics, clean background presentation, and full responsive support.
  */
 export default function Hero() {
+  const heroRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
+
+  // Entrance animation trigger via IntersectionObserver
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.15 },
+    );
+
+    if (heroRef.current) {
+      observer.observe(heroRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   // Typewriter Loop 1: Form Header ("TRY YOUR FREE TRIAL TODAY")
   const fullFormText = "TRY YOUR FREE TRIAL TODAY";
@@ -86,6 +107,7 @@ export default function Hero() {
 
   return (
     <section
+      ref={heroRef}
       id="hero"
       className="relative w-full min-h-screen flex items-center justify-center py-20 lg:py-28 overflow-hidden"
     >
@@ -104,8 +126,14 @@ export default function Hero() {
       {/* Primary Viewport Content Boundary */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-16 lg:pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
-          {/* Left Column: Branding, Typography Hierarchy & Fixed Line */}
-          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left text-white pr-0 lg:pr-4 select-none">
+          {/* Left Column: Entrance from Left */}
+          <div
+            className={`lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left text-white pr-0 lg:pr-4 select-none transition-all duration-1000 ease-out ${
+              isVisible
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 -translate-x-8"
+            }`}
+          >
             {/* Primary Logo Header */}
             <div className="mb-4 sm:mb-6">
               <span className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-wider text-white drop-shadow-md">
@@ -147,8 +175,14 @@ export default function Hero() {
             </a>
           </div>
 
-          {/* Right Column: Floating Form with Continuous Typewriter Header */}
-          <div className="lg:col-span-5 w-full max-w-md mx-auto mt-6 lg:mt-12">
+          {/* Right Column: Entrance from Right */}
+          <div
+            className={`lg:col-span-5 w-full max-w-md mx-auto mt-6 lg:mt-12 transition-all duration-1000 delay-150 ease-out ${
+              isVisible
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 translate-x-8"
+            }`}
+          >
             <div
               className="animate-floating transition-shadow duration-500 hover:shadow-[0_20px_50px_rgba(255,139,56,0.25)]"
               style={{

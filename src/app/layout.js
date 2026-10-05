@@ -12,8 +12,7 @@ export const metadata = {
   title: 'AXIT - Modern Landing Page',
   description: 'Modern template for beautiful prototypes',
   icons: {
-    icon: '/assets/apple-touch-icon.png',
-    apple: '/assets/apple-touch-icon.png',
+    icon: '/icon.png',
   },
 };
 

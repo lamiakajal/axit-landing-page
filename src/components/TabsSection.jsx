@@ -1,16 +1,37 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 /**
  * TabsSection Component
- * Balanced layout for desktop bounds while ensuring compact, natural spacing
- * between text, CTA button, and illustration on mobile screens.
+ * Scroll entrance animation via IntersectionObserver,
+ * infinite auto-loop cycle with smooth crossfades,
+ * balanced content heights, and responsive mobile spacing.
  */
 export default function TabsSection() {
+  const sectionRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+
+  // Trigger entrance animation on scroll into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.2 },
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   // Tab Dataset referencing assets
   const tabsData = [
@@ -62,6 +83,7 @@ export default function TabsSection() {
 
   return (
     <section
+      ref={sectionRef}
       id="features"
       className="w-full bg-light-gray py-14 sm:py-20 lg:py-28 overflow-hidden border-b border-gray-200 select-none"
     >
@@ -73,8 +95,14 @@ export default function TabsSection() {
           onTouchEnd={() => setIsPaused(false)}
           className="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 lg:gap-14"
         >
-          {/* Left + Middle Combined Container */}
-          <div className="w-full lg:w-7/12 flex flex-col sm:flex-row items-center sm:items-stretch gap-6 sm:gap-10 md:gap-14">
+          {/* Left + Middle Combined Container: Smooth entrance from left */}
+          <div
+            className={`w-full lg:w-7/12 flex flex-col sm:flex-row items-center sm:items-stretch gap-6 sm:gap-10 md:gap-14 transition-all duration-1000 ease-out ${
+              isVisible
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 -translate-x-8"
+            }`}
+          >
             {/* Left Vertical Tab Strip */}
             <div className="w-full sm:w-28 shrink-0 flex flex-row sm:flex-col gap-0 rounded-xs overflow-hidden shadow-md divide-x sm:divide-x-0 sm:divide-y divide-gray-600 bg-dark-700">
               {tabsData.map((tab, index) => {
@@ -103,7 +131,7 @@ export default function TabsSection() {
               })}
             </div>
 
-            {/* Middle Content Column: Mobile-e button text-er kache thakbe, desktop-e height bounded thakbe */}
+            {/* Middle Content Column */}
             <div className="flex-1 flex flex-col justify-start sm:justify-between text-center sm:text-left py-0.5 sm:min-h-70">
               <div className="relative">
                 {tabsData.map((tab, index) => {
@@ -129,7 +157,7 @@ export default function TabsSection() {
                 })}
               </div>
 
-              {/* Download CTA Button: Mobile-e mt-6 diye text-er thik niche thakbe */}
+              {/* Download CTA Button */}
               <div className="mt-6 sm:mt-4 flex justify-center sm:justify-start">
                 <a
                   href="#download"
@@ -145,8 +173,14 @@ export default function TabsSection() {
             </div>
           </div>
 
-          {/* Right Column: Artwork with balanced responsive gap */}
-          <div className="w-full lg:w-5/12 flex justify-center items-center relative h-55 sm:h-70 lg:h-80 mt-2 sm:mt-0">
+          {/* Right Column: Artwork with Smooth Entrance from right */}
+          <div
+            className={`w-full lg:w-5/12 flex justify-center items-center relative h-55 sm:h-70 lg:h-80 mt-2 sm:mt-0 transition-all duration-1000 delay-150 ease-out ${
+              isVisible
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 translate-x-8"
+            }`}
+          >
             {tabsData.map((tab, index) => {
               const isCurrent = activeTab === index;
               return (
