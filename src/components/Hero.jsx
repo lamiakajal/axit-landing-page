@@ -5,13 +5,18 @@ import Image from "next/image";
 
 /**
  * Hero Section Component
- * Scroll entrance animation via IntersectionObserver matching Tabs and SubList sections,
- * canonical Tailwind v4 utility tokens (zero linter warnings), dual typewriter loops,
- * floating form physics, clean background presentation, and full responsive support.
+ * - Independent bi-directional viewport observers for heading block and trial card
+ * - Left column typography slides from left; right form card slides from right
+ * - Dual typewriter looping mechanics on subtitle and form banner
+ * - Continuous sinusoidal micro-float physics on interactive form
+ * - Full responsive breakpoint adaptation with zero Tailwind v4 linter warnings
  */
 export default function Hero() {
-  const heroRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const textRef = useRef(null);
+  const formRef = useRef(null);
+
+  const [isTextVisible, setIsTextVisible] = useState(false);
+  const [isFormVisible, setIsFormVisible] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -19,19 +24,47 @@ export default function Hero() {
     password: "",
   });
 
-  // Entrance animation trigger via IntersectionObserver
+  // Observer for Left Headline Column
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
+          setIsTextVisible(true);
+        } else {
+          setIsTextVisible(false);
         }
       },
-      { threshold: 0.15 },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -40px 0px",
+      },
     );
 
-    if (heroRef.current) {
-      observer.observe(heroRef.current);
+    if (textRef.current) {
+      observer.observe(textRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Observer for Right Floating Form Column
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsFormVisible(true);
+        } else {
+          setIsFormVisible(false);
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -40px 0px",
+      },
+    );
+
+    if (formRef.current) {
+      observer.observe(formRef.current);
     }
 
     return () => observer.disconnect();
@@ -107,11 +140,10 @@ export default function Hero() {
 
   return (
     <section
-      ref={heroRef}
       id="hero"
       className="relative w-full min-h-screen flex items-center justify-center py-20 lg:py-28 overflow-hidden"
     >
-      {/* Background Graphic Asset - Clean presentation with zero dark overlay */}
+      {/* Background Graphic Asset */}
       <div className="absolute inset-0 z-0">
         <Image
           src="/assets/banner1.png"
@@ -126,12 +158,13 @@ export default function Hero() {
       {/* Primary Viewport Content Boundary */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-16 lg:pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
-          {/* Left Column: Entrance from Left */}
+          {/* Left Column: Heading and Value Proposition */}
           <div
+            ref={textRef}
             className={`lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left text-white pr-0 lg:pr-4 select-none transition-all duration-1000 ease-out ${
-              isVisible
+              isTextVisible
                 ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-8"
+                : "opacity-0 -translate-x-12"
             }`}
           >
             {/* Primary Logo Header */}
@@ -175,12 +208,13 @@ export default function Hero() {
             </a>
           </div>
 
-          {/* Right Column: Entrance from Right */}
+          {/* Right Column: Floating Trial Registration Card */}
           <div
-            className={`lg:col-span-5 w-full max-w-md mx-auto mt-6 lg:mt-12 transition-all duration-1000 delay-150 ease-out ${
-              isVisible
+            ref={formRef}
+            className={`lg:col-span-5 w-full max-w-md mx-auto mt-6 lg:mt-12 transition-all duration-1000 delay-100 ease-out ${
+              isFormVisible
                 ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-8"
+                : "opacity-0 translate-x-12"
             }`}
           >
             <div
@@ -192,7 +226,7 @@ export default function Hero() {
               }}
             >
               <div className="bg-white rounded-lg shadow-2xl overflow-hidden border border-white/40">
-                {/* Form Title Banner with Active Typewriter & Blinking Cursor */}
+                {/* Form Title Banner with Active Typewriter & Cursor */}
                 <div className="bg-light-gray/95 py-5 px-6 text-center border-b border-gray-200 min-h-17 flex items-center justify-center">
                   <h3 className="text-dark-900 font-semibold text-sm sm:text-base tracking-wide uppercase">
                     <span>
@@ -250,7 +284,7 @@ export default function Hero() {
                     />
                   </div>
 
-                  {/* Submission CTA */}
+                  {/* Submission CTA Button */}
                   <button
                     type="submit"
                     className="relative overflow-hidden w-full mt-4 bg-primary text-white font-semibold text-sm sm:text-base py-3.5 px-4 rounded-b-md shadow-md cursor-pointer transition-colors duration-300 group active:scale-[0.99]"

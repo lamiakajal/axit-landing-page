@@ -6,36 +6,68 @@ import { FaCloudUploadAlt, FaCloudDownloadAlt } from "react-icons/fa";
 
 /**
  * SubListSection Component
- * Scroll entrance animation via IntersectionObserver,
- * gentle looping floating micro-animations for feature icons,
- * enhanced tactile hover interaction, expanding accent line,
- * and zero linter warnings.
+ * - Independent bi-directional viewport observers for image mockup and content list
+ * - Left column browser frame slides from left; right features slide from right
+ * - Reset mechanics on scroll-out ensuring seamless re-triggering across responsive viewports
+ * - Continuous sinusoidal micro-float loops and ripple ping animations on icons
+ * - Strict adherence to Tailwind CSS v4 canonical tokens with zero linter warnings
  */
 export default function SubListSection() {
-  const sectionRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const imageRef = useRef(null);
+  const contentRef = useRef(null);
+
+  const [isImageVisible, setIsImageVisible] = useState(false);
+  const [isContentVisible, setIsContentVisible] = useState(false);
   const [isLineExpanded, setIsLineExpanded] = useState(false);
 
-  // Trigger entrance animations and line expand/contract on scroll
+  // Observer for Left Image Column
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
+          setIsImageVisible(true);
+        } else {
+          setIsImageVisible(false);
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -40px 0px",
+      },
+    );
+
+    if (imageRef.current) {
+      observer.observe(imageRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Observer for Right Content Column
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsContentVisible(true);
           setIsLineExpanded(true);
 
-          // Contract line smoothly back after expanding
           const timer = setTimeout(() => {
             setIsLineExpanded(false);
           }, 900);
           return () => clearTimeout(timer);
+        } else {
+          setIsContentVisible(false);
+          setIsLineExpanded(false);
         }
       },
-      { threshold: 0.25 },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -40px 0px",
+      },
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    if (contentRef.current) {
+      observer.observe(contentRef.current);
     }
 
     return () => observer.disconnect();
@@ -60,23 +92,23 @@ export default function SubListSection() {
 
   return (
     <section
-      ref={sectionRef}
       id="sub-list"
       className="w-full bg-white py-16 sm:py-20 lg:py-28 overflow-hidden border-b border-gray-200 select-none"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left Column: Clean Browser Frame with smooth scroll entrance */}
+          {/* Left Column: Clean Browser Frame with smooth entrance */}
           <div
+            ref={imageRef}
             className={`lg:col-span-6 flex justify-center items-center transition-all duration-1000 ease-out ${
-              isVisible
+              isImageVisible
                 ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-10"
+                : "opacity-0 -translate-x-12"
             }`}
           >
             <div className="relative w-full max-w-xl group">
               {/* Browser Window Wrapper */}
-              <div className="rounded-lg overflow-hidden shadow-2xl border border-gray-200/90 bg-white transition-shadow duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.12)]">
+              <div className="rounded-lg overflow-hidden shadow-2xl border border-gray-200/90 bg-white transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
                 {/* Mock Browser Top Header Bar */}
                 <div className="h-7 bg-[#f1f1f1] border-b border-gray-200 flex items-center px-3.5 gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56] inline-block shadow-2xs" />
@@ -85,7 +117,7 @@ export default function SubListSection() {
                   <div className="mx-auto w-1/2 h-3.5 bg-white rounded-xs border border-gray-200/70 hidden sm:block" />
                 </div>
 
-                {/* Picture Container (Static & Sharp) */}
+                {/* Picture Container */}
                 <div className="relative w-full h-64 sm:h-80 md:h-96 overflow-hidden bg-gray-100">
                   <Image
                     src="/assets/img-1.jpg"
@@ -107,10 +139,11 @@ export default function SubListSection() {
 
           {/* Right Column: Section Details & Animated Features */}
           <div
-            className={`lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left transition-all duration-1000 delay-200 ease-out ${
-              isVisible
+            ref={contentRef}
+            className={`lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left transition-all duration-1000 ease-out ${
+              isContentVisible
                 ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-10"
+                : "opacity-0 translate-x-12"
             }`}
           >
             {/* Title Container with Dynamic Expanding Line */}
@@ -145,10 +178,10 @@ export default function SubListSection() {
                   <div
                     key={item.id}
                     style={{ transitionDelay: `${index * 150}ms` }}
-                    className={`p-3 -mx-3 rounded-lg sm:rounded-xl transition-all duration-300 ease-out hover:bg-neutral-50/80 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-5 group/item cursor-pointer ${
-                      isVisible
+                    className={`p-3 -mx-3 rounded-lg sm:rounded-xl transition-all duration-500 ease-out hover:bg-neutral-50/80 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-5 group/item cursor-pointer ${
+                      isContentVisible
                         ? "opacity-100 translate-y-0"
-                        : "opacity-0 translate-y-4"
+                        : "opacity-0 translate-y-6"
                     }`}
                   >
                     {/* Circle Icon Badge with Continuous Floating Loop Animation */}
@@ -167,7 +200,7 @@ export default function SubListSection() {
                           animation: `floatSmooth ${4 + index}s ease-in-out infinite`,
                           animationDelay: `${index * 0.7}s`,
                         }}
-                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-primary/70 flex items-center justify-center text-primary bg-primary/5 transition-all duration-300 ease-out group-hover/item:bg-primary group-hover/item:text-white group-hover/item:border-primary group-hover/item:scale-105 group-hover/item:-translate-y-1 group-hover/item:shadow-[0_8px_20px_rgba(255,139,56,0.35)] group-hover/item:[animation-play-state:paused]"
+                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-primary/70 flex items-center justify-center text-primary bg-primary/5 transition-all duration-300 ease-out group-hover/item:bg-primary group-hover/item:text-white group-hover/item:border-primary group-hover/item:scale-105 group-hover/item:-translate-y-1 group-hover/item:shadow-md group-hover/item:[animation-play-state:paused]"
                       >
                         <Icon className="w-6 h-6 transition-transform duration-300 group-hover/item:scale-110" />
                       </div>

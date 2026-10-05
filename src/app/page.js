@@ -7,6 +7,7 @@ import SubListSection from '@/components/SubListSection';
 import StandardPictureSection from '@/components/StandardPictureSection';
 import AwesomeFeatures from '@/components/AwesomeFeatures';
 import PricingSection from '@/components/PricingSection';
+import Testimonials from '@/components/Testimonials';
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
       <StandardPictureSection />
       <AwesomeFeatures />
       <PricingSection />
+      <Testimonials />
     </main>
   );
 }

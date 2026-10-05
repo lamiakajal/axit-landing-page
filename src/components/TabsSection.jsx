@@ -5,29 +5,62 @@ import Image from "next/image";
 
 /**
  * TabsSection Component
- * Scroll entrance animation via IntersectionObserver,
- * infinite auto-loop cycle with smooth crossfades,
- * balanced content heights, and responsive mobile spacing.
+ * - Independent bi-directional viewport observers for typography block and artwork
+ * - Left column controls and content slide from left; right artwork slides from right
+ * - Reset mechanics on scroll-out ensuring repeatable trigger cycles across viewports
+ * - Continuous infinite auto-loop tab cycle with pointer/touch pause mechanics
+ * - Full responsive breakpoint adaptation with zero Tailwind v4 linter warnings
  */
 export default function TabsSection() {
-  const sectionRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const contentRef = useRef(null);
+  const imageRef = useRef(null);
+
+  const [isContentVisible, setIsContentVisible] = useState(false);
+  const [isImageVisible, setIsImageVisible] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Trigger entrance animation on scroll into view
+  // Observer for Left Content & Tab Controls
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
+          setIsContentVisible(true);
+        } else {
+          setIsContentVisible(false);
         }
       },
-      { threshold: 0.2 },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -40px 0px",
+      },
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    if (contentRef.current) {
+      observer.observe(contentRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Observer for Right Artwork Image
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsImageVisible(true);
+        } else {
+          setIsImageVisible(false);
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -40px 0px",
+      },
+    );
+
+    if (imageRef.current) {
+      observer.observe(imageRef.current);
     }
 
     return () => observer.disconnect();
@@ -70,7 +103,7 @@ export default function TabsSection() {
     },
   ];
 
-  // Silky smooth auto-loop interval (3s), pauses on hover/touch
+  // Infinite tab auto-advance interval (3s), pauses on hover/touch
   useEffect(() => {
     if (isPaused) return;
 
@@ -83,7 +116,6 @@ export default function TabsSection() {
 
   return (
     <section
-      ref={sectionRef}
       id="features"
       className="w-full bg-light-gray py-14 sm:py-20 lg:py-28 overflow-hidden border-b border-gray-200 select-none"
     >
@@ -95,12 +127,13 @@ export default function TabsSection() {
           onTouchEnd={() => setIsPaused(false)}
           className="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 lg:gap-14"
         >
-          {/* Left + Middle Combined Container: Smooth entrance from left */}
+          {/* Left + Middle Combined Container: Slides smoothly from left */}
           <div
+            ref={contentRef}
             className={`w-full lg:w-7/12 flex flex-col sm:flex-row items-center sm:items-stretch gap-6 sm:gap-10 md:gap-14 transition-all duration-1000 ease-out ${
-              isVisible
+              isContentVisible
                 ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-8"
+                : "opacity-0 -translate-x-12"
             }`}
           >
             {/* Left Vertical Tab Strip */}
@@ -110,6 +143,7 @@ export default function TabsSection() {
                 return (
                   <button
                     key={tab.id}
+                    type="button"
                     onClick={() => setActiveTab(index)}
                     role="tab"
                     aria-selected={isActive}
@@ -175,10 +209,11 @@ export default function TabsSection() {
 
           {/* Right Column: Artwork with Smooth Entrance from right */}
           <div
-            className={`w-full lg:w-5/12 flex justify-center items-center relative h-55 sm:h-70 lg:h-80 mt-2 sm:mt-0 transition-all duration-1000 delay-150 ease-out ${
-              isVisible
+            ref={imageRef}
+            className={`w-full lg:w-5/12 flex justify-center items-center relative h-55 sm:h-70 lg:h-80 mt-2 sm:mt-0 transition-all duration-1000 ease-out ${
+              isImageVisible
                 ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-8"
+                : "opacity-0 translate-x-12"
             }`}
           >
             {tabsData.map((tab, index) => {
