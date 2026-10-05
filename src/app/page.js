@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import SocialMedia from '@/components/SocialMedia';
+import TabsSection from '@/components/TabsSection';
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <SocialMedia />
+      <TabsSection />
     </main>
   );
 }
