@@ -11,6 +11,7 @@ import Testimonials from '@/components/Testimonials';
 import CallToAction from '@/components/CallToAction';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
+import ScrollToTop from '@/components/ScrollToTop';
 
 export default function Home() {
   return (
@@ -31,6 +32,9 @@ export default function Home() {
       <CallToAction />
       <ContactSection />
       <Footer />
+
+      {/* Persistent Floating Back-to-Top Action Trigger */}
+      <ScrollToTop />
     </main>
   );
 }
