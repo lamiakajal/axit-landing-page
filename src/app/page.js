@@ -8,6 +8,7 @@ import StandardPictureSection from '@/components/StandardPictureSection';
 import AwesomeFeatures from '@/components/AwesomeFeatures';
 import PricingSection from '@/components/PricingSection';
 import Testimonials from '@/components/Testimonials';
+import CallToAction from '@/components/CallToAction';
 
 export default function Home() {
   return (
@@ -25,6 +26,7 @@ export default function Home() {
       <AwesomeFeatures />
       <PricingSection />
       <Testimonials />
+      <CallToAction />
     </main>
   );
 }
