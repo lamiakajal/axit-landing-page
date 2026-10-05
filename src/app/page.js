@@ -10,6 +10,7 @@ import PricingSection from '@/components/PricingSection';
 import Testimonials from '@/components/Testimonials';
 import CallToAction from '@/components/CallToAction';
 import ContactSection from '@/components/ContactSection';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
@@ -29,6 +30,7 @@ export default function Home() {
       <Testimonials />
       <CallToAction />
       <ContactSection />
+      <Footer />
     </main>
   );
 }
