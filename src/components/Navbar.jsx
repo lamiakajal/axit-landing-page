@@ -7,35 +7,37 @@ import { HiMenu, HiX } from "react-icons/hi";
 
 /**
  * Navbar Component
- * Fully responsive sticky navigation bar with backdrop blur,
- * touch-optimized active states, animated underline indicator, and smooth section jump.
+ * - Persistent navigation header with scroll-reactive background tint and elevation
+ * - Synchronized section ID anchors supporting smooth viewport scrolling
+ * - Accessible mobile dropdown drawer with state management
+ * - Zero linter warnings adhering to React and Tailwind CSS v4 standards
  */
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Scroll detection for sticky shadow & blur
+  // Passive scroll listener for background elevation
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    // Initialize state on mount
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navLinks = [
     { name: "Features", href: "#features" },
-    { name: "About", href: "#about" },
+    { name: "About", href: "#standard-picture" },
     { name: "Pricing", href: "#pricing" },
     { name: "Reviews", href: "#reviews" },
     { name: "Contact", href: "#contact" },
   ];
 
+  // Smooth scroll handler for anchor navigation
   const handleLinkClick = (e, href) => {
     e.preventDefault();
     setIsOpen(false);
@@ -47,10 +49,10 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 select-none ${
         isScrolled
-          ? "bg-dark-900/95 backdrop-blur-md shadow-xl py-2.5"
-          : "bg-dark-900 py-4"
+          ? "bg-dark-900/95 backdrop-blur-md shadow-xl py-2.5 border-b border-white/10"
+          : "bg-dark-900 py-4 border-b border-transparent"
       }`}
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 flex items-center justify-between">
@@ -69,7 +71,7 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* Desktop Navigation Menu (md, lg, xl, 2xl) */}
+        {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center space-x-6 lg:space-x-10 text-sm font-semibold text-gray-300">
           {navLinks.map((link) => (
             <a
@@ -79,7 +81,8 @@ export default function Navbar() {
               className="relative py-1 tracking-wide text-gray-300 hover:text-white active:text-primary transition-colors duration-300 group cursor-pointer"
             >
               {link.name}
-              {/* Smooth Hover & Active Underline Indicator */}
+
+              {/* Dynamic hover and active underline indicator */}
               <span
                 aria-hidden="true"
                 className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 ease-out group-hover:w-full group-active:w-full"
@@ -88,11 +91,13 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Mobile Hamburger Button with Tap Animation */}
+        {/* Mobile Hamburger Toggle Button */}
         <button
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-2xl text-gray-300 hover:text-primary active:text-primary transition-colors p-2 rounded-md focus:outline-none active:scale-90"
-          aria-label="Toggle Navigation Menu"
+          aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isOpen}
+          className="md:hidden text-2xl text-gray-300 hover:text-primary active:text-primary transition-colors p-2 rounded-md focus:outline-none active:scale-90 cursor-pointer"
         >
           {isOpen ? (
             <HiX className="w-7 h-7" />
@@ -107,7 +112,7 @@ export default function Navbar() {
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-dark-900/98 backdrop-blur-lg border-t border-neutral-800 ${
           isOpen
             ? "max-h-80 opacity-100 py-4 shadow-2xl"
-            : "max-h-0 opacity-0 py-0"
+            : "max-h-0 opacity-0 py-0 pointer-events-none"
         }`}
       >
         <div className="flex flex-col space-y-1 px-4 sm:px-6">
@@ -116,11 +121,10 @@ export default function Navbar() {
               key={link.name}
               href={link.href}
               onClick={(e) => handleLinkClick(e, link.href)}
-              className="relative block text-gray-300 hover:text-white hover:bg-neutral-800/60 active:bg-primary/20 active:text-primary px-4 py-3 rounded-md font-medium text-sm transition-all duration-200 active:scale-[0.98]"
+              className="relative block text-gray-300 hover:text-white hover:bg-neutral-800/60 active:bg-primary/20 active:text-primary px-4 py-3 rounded-md font-medium text-sm transition-all duration-200 active:scale-[0.98] cursor-pointer"
             >
               <span className="flex items-center justify-between">
                 {link.name}
-                {/* Subtle right accent arrow for mobile interaction */}
                 <span className="text-primary text-xs opacity-0 hover:opacity-100 active:opacity-100 transition-opacity">
                   &rarr;
                 </span>

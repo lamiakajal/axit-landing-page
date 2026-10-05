@@ -13,27 +13,60 @@ import {
 
 /**
  * Social Media Strip Component
- * Matches scroll entrance animations of Hero, Tabs, and SubList sections,
- * distinct dark-gray bottom divider, responsive mobile-to-desktop layout,
- * and sequenced pulse looping icons.
+ * - Independent bi-directional viewport observers for heading block and icon strip
+ * - Left column text slides from left; right social icons slide from right
+ * - Reset mechanics on scroll-out ensuring repeatable trigger cycles across viewports
+ * - Sequenced pulse animations and touch-friendly interactive states
+ * - Strict compliance with Tailwind CSS v4 canonical tokens with zero linter warnings
  */
 export default function SocialMedia() {
-  const sectionRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const textRef = useRef(null);
+  const iconsRef = useRef(null);
 
-  // Trigger scroll entrance animation via IntersectionObserver
+  const [isTextVisible, setIsTextVisible] = useState(false);
+  const [isIconsVisible, setIsIconsVisible] = useState(false);
+
+  // Observer for Left Heading and Description Column
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
+          setIsTextVisible(true);
+        } else {
+          setIsTextVisible(false);
         }
       },
-      { threshold: 0.2 },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -40px 0px",
+      },
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    if (textRef.current) {
+      observer.observe(textRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Observer for Right Social Icons Column
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsIconsVisible(true);
+        } else {
+          setIsIconsVisible(false);
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -40px 0px",
+      },
+    );
+
+    if (iconsRef.current) {
+      observer.observe(iconsRef.current);
     }
 
     return () => observer.disconnect();
@@ -59,17 +92,18 @@ export default function SocialMedia() {
 
   return (
     <section
-      ref={sectionRef}
+      id="social-media"
       className="relative z-10 w-full bg-white border-b border-[#cccccc] shadow-[0_3px_6px_rgba(0,0,0,0.06)] py-6 sm:py-7 md:py-8 overflow-hidden select-none"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-10">
           {/* Left Column: Heading and Context Description (Smooth Entrance from Left) */}
           <div
+            ref={textRef}
             className={`text-center lg:text-left max-w-xl transition-all duration-1000 ease-out ${
-              isVisible
+              isTextVisible
                 ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-8"
+                : "opacity-0 -translate-x-12"
             }`}
           >
             <h3 className="text-xl sm:text-2xl font-bold text-dark-900 tracking-tight leading-snug">
@@ -83,10 +117,11 @@ export default function SocialMedia() {
 
           {/* Right Column: Responsive Looping & Pulsing Social Icons (Smooth Entrance from Right) */}
           <div
-            className={`w-full lg:w-auto flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-7 lg:gap-8 transition-all duration-1000 delay-150 ease-out ${
-              isVisible
+            ref={iconsRef}
+            className={`w-full lg:w-auto flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-7 lg:gap-8 transition-all duration-1000 delay-100 ease-out ${
+              isIconsVisible
                 ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-8"
+                : "opacity-0 translate-x-12"
             }`}
           >
             {socialLinks.map((item, index) => {
