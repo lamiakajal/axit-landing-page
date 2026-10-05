@@ -5,9 +5,8 @@ import Image from "next/image";
 
 /**
  * Hero Section Component
- * Fully responsive full-viewport hero layout featuring an optimized dual-tone overlay,
- * refined semantic typography hierarchy with balanced sizing,
- * butter-smooth floating card physics, and left-to-right solid primary slide-in interactive CTAs.
+ * Features a full-viewport responsive layout with background overlay,
+ * stepped column alignment, cross-device interactive buttons, and standard section spacing.
  */
 export default function Hero() {
   const [formData, setFormData] = useState({
@@ -29,7 +28,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center pt-24 pb-12 sm:pt-28 sm:pb-16 lg:pt-0 lg:pb-0 overflow-hidden">
+    <section className="relative w-full min-h-screen flex items-center justify-center py-20 lg:py-28 overflow-hidden">
       {/* Background Graphic Asset with High-Contrast Dark Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -44,8 +43,8 @@ export default function Hero() {
       </div>
 
       {/* Primary Viewport Content Boundary */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-16 lg:pt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
           {/* Left Column: Semantic Branding, Value Pitch & Primary Action */}
           <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left text-white pr-0 lg:pr-4">
             {/* Primary Logo Header */}
@@ -55,7 +54,7 @@ export default function Hero() {
               </span>
             </div>
 
-            {/* Secondary Heading: Balanced typography size and width */}
+            {/* Secondary Heading */}
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[2rem] font-light uppercase tracking-wide leading-snug sm:leading-tight max-w-lg">
               MODERN AXURE TEMPLATE <br className="hidden sm:inline" />
               <span className="font-normal">FOR BEAUTIFUL PROTOTYPES</span>
@@ -71,21 +70,25 @@ export default function Hero() {
               designed specifically for high-impact web presentations.
             </p>
 
-            {/* Interactive Download Anchor with Left-to-Right Primary Slide Hover */}
+            {/* Interactive Download Button with Functional Left-to-Right Hover */}
             <a
               href="#download"
-              className="relative overflow-hidden inline-block border-2 border-white text-white font-medium text-sm sm:text-base px-8 py-3.5 transition-all duration-300 group shadow-sm active:scale-95"
+              className="relative overflow-hidden inline-block border-2 border-white text-white font-medium text-sm sm:text-base px-8 py-3.5 transition-colors duration-300 group shadow-sm active:scale-95 cursor-pointer"
             >
-              <span className="absolute inset-0 w-full h-full bg-primary transform -translate-x-full transition-transform duration-500 ease-out group-hover:translate-x-0" />
+              {/* Sliding Layer (Left to Right) */}
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 bg-primary -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0 group-active:translate-x-0"
+              />
               <span className="relative z-10 transition-colors duration-300 group-hover:text-white">
                 Download
               </span>
             </a>
           </div>
 
-          {/* Right Column: Lead Capture Card */}
-          <div className="lg:col-span-5 w-full max-w-md mx-auto">
-            {/* Smooth Floating Keyframe Layer */}
+          {/* Right Column: Lead Capture Card (Shifted slightly lower than the Download button) */}
+          <div className="lg:col-span-5 w-full max-w-md mx-auto mt-6 lg:mt-12">
+            {/* Smooth Floating Card Container */}
             <div className="animate-floating transition-shadow duration-500 hover:shadow-[0_20px_50px_rgba(255,139,56,0.2)]">
               <div className="bg-white rounded-lg shadow-2xl overflow-hidden border border-white/20">
                 {/* Form Title Banner */}
@@ -138,12 +141,15 @@ export default function Hero() {
                     />
                   </div>
 
-                  {/* Submission CTA with Left-to-Right Solid Brand Primary Hover */}
+                  {/* Submission CTA with Left-to-Right Hover & Touch-Active State */}
                   <button
                     type="submit"
-                    className="relative overflow-hidden w-full mt-4 bg-primary text-white font-semibold text-sm sm:text-base py-3.5 px-4 rounded-b-md shadow-md cursor-pointer transition-all duration-300 group active:scale-[0.99]"
+                    className="relative overflow-hidden w-full mt-4 bg-primary text-white font-semibold text-sm sm:text-base py-3.5 px-4 rounded-b-md shadow-md cursor-pointer transition-colors duration-300 group active:scale-[0.99]"
                   >
-                    <span className="absolute inset-0 w-full h-full bg-primary-hover transform -translate-x-full transition-transform duration-500 ease-out group-hover:translate-x-0" />
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 bg-primary-hover -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0 group-active:translate-x-0"
+                    />
                     <span className="relative z-10">Get Started</span>
                   </button>
                 </form>
