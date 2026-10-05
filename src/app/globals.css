@@ -38,7 +38,43 @@ body {
   }
 }
 
+@keyframes lineExpandRetract {
+  0% {
+    width: 3.5rem;
+  }
+  50% {
+    width: 100%;
+  }
+  100% {
+    width: 3.5rem;
+  }
+}
+
 .animate-floating {
-  animation: floatSmooth 6s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+  animation: floatSmooth 5.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite !important;
   will-change: transform;
+}
+
+.animate-line-expand {
+  animation: lineExpandRetract 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  will-change: width;
+}
+
+@keyframes socialPulseLoop {
+  0%,
+  100% {
+    transform: scale(1) translateY(0);
+    color: #9ca3af;
+    filter: drop-shadow(0 0 0px transparent);
+  }
+  50% {
+    transform: scale(1.22) translateY(-2px);
+    color: var(--color-primary, #ff8b38);
+    filter: drop-shadow(0 4px 10px rgba(255, 139, 56, 0.35));
+  }
+}
+
+.animate-social-pulse {
+  animation: socialPulseLoop 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform, color, filter;
 }
