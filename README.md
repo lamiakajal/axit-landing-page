@@ -6,7 +6,11 @@ A modern, high-performance, and responsive SaaS landing page developed with **Ne
 
 ## 🚀 Live Demo & Repository
 
+<<<<<<< HEAD
 - **Live Preview:** [https://axit-lamiakajal.vercel.app/](https://axit-lamiakajal.vercel.app/)
+=======
+- **Live Preview:** [(https://axit-lamiakajal.vercel.app)](https://axit-lamiakajal.vercel.app/)
+>>>>>>> 3222543114f3f883efeaa36141253e360c78fba9
 - **GitHub Repository:** [https://github.com/lamiakajal/axit-landing-page](https://github.com/lamiakajal/axit-landing-page)
 
 ---
