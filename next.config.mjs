@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* Experimental options */
-  experimental: {
-    reactCompiler: true,
-  },
+  /* React Compiler support */
+  reactCompiler: true,
 
   /* External Images Support */
   images: {

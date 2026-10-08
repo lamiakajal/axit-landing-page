@@ -1,80 +1,54 @@
 # AXIT — Modern Responsive SaaS Landing Page
 
-A modern, high-performance, and responsive SaaS landing page developed with **Next.js (App Router)** and **Tailwind CSS v4**. Built with scalable architecture, bidirectional scroll-triggered entrance animations, and micro-interactions.
+A modern, high-performance, and responsive SaaS landing page developed with **Next.js (App Router)** and **Tailwind CSS**. Built with modular component architecture, smooth scroll-triggered viewport animations, interactive tab navigation, and production-ready optimizations.
 
 ---
 
 ## 🚀 Live Demo & Repository
 
-<<<<<<< HEAD
-- **Live Preview:** [https://axit-lamiakajal.vercel.app/](https://axit-lamiakajal.vercel.app/)
+- **Live Demo:** [https://axit-lamiakajal.vercel.app](https://axit-lamiakajal.vercel.app)
 - **GitHub Repository:** [https://github.com/lamiakajal/axit-landing-page](https://github.com/lamiakajal/axit-landing-page)
 
 ---
 
-## 📌 Project Overview
+## ✨ Key Features
 
-**AXIT** is a production-ready web application replicating the classic Axure style with modern front-end standards:
-
-- **Bi-Directional Scroll Physics:** Built with native `IntersectionObserver` controllers that trigger entrance animations smoothly on scroll and cleanly reset on viewport exit for repeatable playback.
-- **Hardware-Accelerated Micro-Animations:** Custom infinite shimmer sweeps, floating actions, responsive hover elevations, and dynamic accent underline morphing.
-- **Zero Third-Party Animation Bloat:** 100% vanilla browser APIs and CSS transforms without heavy animation libraries.
-- **Pixel-Perfect Responsive Grid:** Built using canonical Tailwind CSS v4 design tokens, ensuring fluid responsiveness across mobile, tablet, laptop, and ultra-wide desktop viewports.
-- **SEO & Social Metadata Ready:** Structured semantic landmarks, Open Graph tags, and accessibility-compliant HTML.
-
----
-
-## 🧩 Architectural Breakdown
-
-| Section              | Key Technical Highlights                                                                           |
-| :------------------- | :------------------------------------------------------------------------------------------------- |
-| **Navbar**           | Sticky header, backdrop blur, active anchor transitions, responsive mobile menu drawer.            |
-| **Hero**             | Natural asset rendering without overlays, fluid typography, and interactive lead-capture form.     |
-| **Social Media**     | Follower analytics counter strip with subtle hovering float loops.                                 |
-| **Tabs Section**     | Reactive tabbed content switcher built with clean component state.                                 |
-| **Sub List**         | Asymmetric two-column feature layout with staggered entrance sequences.                            |
-| **Standard Picture** | High-definition display container with smooth directional slide entrance.                          |
-| **Awesome Features** | 3-column value matrix with lifted card physics and custom iconography.                             |
-| **Pricing Tier**     | Subscription tiering cards with highlighted popular package and hover animations.                  |
-| **Call To Action**   | Urban landscape asset display, expanding underline accent, and ghost action button.                |
-| **Testimonials**     | Social proof review matrix with authentic client cards and avatars.                                |
-| **Contact Section**  | Two-column responsive inquiry layout with focus box highlights and shimmer submit button.          |
-| **Footer**           | Staggered social link directory matching exact Axure themes specifications.                        |
-| **ScrollToTop**      | Persistent floating action button (FAB) with continuous loop animation and smooth apex navigation. |
+- **Component-Driven Layout:** Clean separation of concerns with modular sections (`Banner`, `FeatureStats`, `ScrollToTop`).
+- **Responsive Architecture:** Fluid multi-device compatibility optimized across mobile, tablet, laptop, and ultra-wide viewports.
+- **Scroll-Triggered Motion:** Bidirectional entrance transitions utilizing native Intersection Observer listeners.
+- **Interactive Showcase:** Dynamic tab navigation highlighting features, metrics, and workflows.
+- **Conversion-Focused Hero:** High-visibility hero banner paired with integrated lead capture and CTA buttons.
+- **Optimized Asset Pipeline:** Integrated Next.js Image component optimization with modern remote media support.
 
 ---
 
-## 🛠️ Tech Stack & Dependencies
+## 🛠️ Tech Stack
 
-- **Framework:** Next.js (App Router)
-- **Library:** React
-- **Styling:** Tailwind CSS v4
-- **Icons:** React Icons (`react-icons/fa`, `react-icons/hi2`)
-- **Hosting & CI/CD:** Vercel
-
----
-
-## 💻 Local Development Setup
-
-Follow these steps to run the project locally:
-
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/lamiakajal/axit-landing-page.git](https://github.com/lamiakajal/axit-landing-page.git)
-   cd axit-landing-page
-   ```
+- **Framework:** [Next.js](https://nextjs.org/) (App Router, JavaScript / React)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) & PostCSS
+- **Icons:** [React Icons](https://react-icons.github.io/react-icons/)
+- **Deployment:** [Vercel](https://vercel.com/)
+- **Version Control:** Git & GitHub
 
 ---
 
-## 👩‍💻 Author & Maintainer
+## 📁 Project Structure
 
-**Lamia Kajal**
-
-- **GitHub:** [@lamiakajal](https://github.com/lamiakajal)
-- **Role:** Web Developer / Frontend Software Engineer
-
----
-
-## 📄 License
-
-This project is open-source and available under the [MIT License](LICENSE).
+```text
+axit-landing-page/
+├── public/                 # Static assets and media
+├── src/
+│   ├── app/
+│   │   ├── globals.css     # Tailwind directives and global CSS
+│   │   ├── layout.js       # Root layout wrapper
+│   │   └── page.js         # Primary landing page view
+│   └── components/
+│       ├── Banner.jsx       # Hero showcase and lead capture CTA
+│       ├── FeatureStats.jsx # Core platform metrics and tab features
+│       └── ScrollToTop.jsx  # Floating viewport navigation button
+├── jsconfig.json           # Path alias configurations
+├── next.config.mjs         # Next.js compiler and image options
+├── package.json            # Node dependencies and npm scripts
+├── postcss.config.mjs      # CSS processor pipeline
+└── README.md               # Project documentation
+```
